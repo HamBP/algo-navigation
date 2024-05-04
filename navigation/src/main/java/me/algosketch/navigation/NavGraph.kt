@@ -1,6 +1,6 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
-class NavGraph() : NavDestination("navigation") {
+class NavGraph : NavDestination("navigation") {
     val nodes = mutableListOf<NavDestination>()
     var startDestinationRoute: String? = null
 }

@@ -1,4 +1,4 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
 class ComposeNavGraphNavigator(
     private val navigatorProvider: Map<String, Navigator<out NavDestination>>

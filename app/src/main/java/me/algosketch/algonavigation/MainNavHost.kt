@@ -5,12 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import me.algosketch.algonavigation.ui.theme.AlgoNavigationTheme
+import me.algosketch.navigation.composable
 
 @Composable
 fun MainNavHost() {
-    val navController = rememberNavController()
+    val navController = me.algosketch.navigation.rememberNavController()
 
-    NavHost(
+    me.algosketch.navigation.NavHost(
         navController = navController,
         startDestination = "home"
     ) {

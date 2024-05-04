@@ -1,4 +1,4 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

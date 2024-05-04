@@ -1,4 +1,4 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

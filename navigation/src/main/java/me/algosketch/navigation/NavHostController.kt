@@ -1,11 +1,8 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
 import androidx.annotation.MainThread
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
 fun rememberNavController(): NavHostController {

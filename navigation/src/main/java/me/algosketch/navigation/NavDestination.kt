@@ -1,4 +1,4 @@
-package me.algosketch.algonavigation
+package me.algosketch.navigation
 
 open class NavDestination(
     val navigatorName: String
