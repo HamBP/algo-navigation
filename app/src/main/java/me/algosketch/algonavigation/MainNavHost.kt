@@ -10,8 +10,11 @@ import me.algosketch.algonavigation.ui.theme.AlgoNavigationTheme
 fun MainNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController) {
-        composable {
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ) {
+        composable("home") {
             Greeting(name = "Android")
         }
     }
