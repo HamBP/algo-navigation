@@ -10,9 +10,10 @@ class ComposeNavigator {
     private val _backStack: MutableStateFlow<List<NavBackStackEntry>> = MutableStateFlow(listOf())
     val backStack: StateFlow<List<NavBackStackEntry>> = _backStack.asStateFlow()
 
-    fun initStartDestination(content: @Composable () -> Unit) {
+    fun initStartDestinations(graph: List<Destination>) {
         _backStack.update {
-            it + NavBackStackEntry(Destination(content))
+            // TODO : startDestination 으로 변경해야 한다
+            it + NavBackStackEntry(graph.first())
         }
     }
 

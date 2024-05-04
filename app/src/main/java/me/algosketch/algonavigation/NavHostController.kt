@@ -14,4 +14,8 @@ private fun createNavController() = NavHostController()
 
 open class NavHostController {
     val navigator = ComposeNavigator()
+
+    inline fun createGraph(builder: NavGraphBuilder): List<ComposeNavigator.Destination> {
+        return builder.build()
+    }
 }

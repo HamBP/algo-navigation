@@ -11,7 +11,9 @@ fun MainNavHost() {
     val navController = rememberNavController()
 
     NavHost(navController) {
-        Greeting(name = "Android")
+        composable {
+            Greeting(name = "Android")
+        }
     }
 }
 
