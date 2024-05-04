@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Algo Navigation"
 include(":app")
+include(":navigation")
