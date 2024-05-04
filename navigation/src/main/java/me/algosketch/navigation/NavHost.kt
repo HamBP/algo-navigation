@@ -11,9 +11,23 @@ fun NavHost(
     startDestination: String,
     builder: NavGraphBuilder.() -> Unit,
 ) {
-    val graph = remember {
-        navController.createGraph(NavGraphBuilder(startDestination).apply(builder))
-    }
+    NavHost(
+        navController,
+        remember(startDestination, builder) {
+            navController.createGraph(
+                NavGraphBuilder(
+                    startDestination
+                ).apply(builder)
+            )
+        },
+    )
+}
+
+@Composable
+fun NavHost(
+    navController: NavHostController,
+    graph: NavGraph,
+) {
     navController.graph = graph
 
     val currentBackStack by navController.navigatorProvider[ComposeNavigator.NAME]!!.backStack.collectAsState()

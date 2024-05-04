@@ -20,7 +20,6 @@ open class NavHostController {
     val navigatorProvider = mutableMapOf<String, Navigator<out NavDestination>>()
 
     private var _graph: NavGraph? = null
-
     var graph: NavGraph
         @MainThread
         get() {
@@ -28,13 +27,20 @@ open class NavHostController {
             return _graph as NavGraph
         }
         @MainThread
-        set(graph) {
-            _graph = graph
-            navigate(graph)
+        set(value) {
+            if (value != _graph) {
+                _graph = value
+                navigate(value)
+            }
         }
 
     inline fun createGraph(builder: NavGraphBuilder): NavGraph {
         return builder.build()
+    }
+
+    fun navigate(route: String) {
+        val node = graph.nodes.find { it.route == route }!!
+        navigate(node)
     }
 
     private fun navigate(
