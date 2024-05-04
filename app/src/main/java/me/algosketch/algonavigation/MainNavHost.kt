@@ -8,7 +8,11 @@ import me.algosketch.algonavigation.ui.theme.AlgoNavigationTheme
 
 @Composable
 fun MainNavHost() {
-    Greeting(name = "Android")
+    val navController = rememberNavController()
+
+    NavHost(navController) {
+        Greeting(name = "Android")
+    }
 }
 
 @Composable
