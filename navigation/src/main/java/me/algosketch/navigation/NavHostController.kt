@@ -95,7 +95,7 @@ open class NavHostController {
         return poped
     }
 
-    fun addEntryToBackStack(
+    private fun addEntryToBackStack(
         backStackEntry: NavBackStackEntry,
     ) {
         backQueue.add(backStackEntry)

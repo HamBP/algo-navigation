@@ -7,7 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import me.algosketch.algonavigation.ui.theme.AlgoNavigationTheme
 import me.algosketch.navigation.NavHost
+import me.algosketch.navigation.NavType
 import me.algosketch.navigation.composable
+import me.algosketch.navigation.navArgument
 import me.algosketch.navigation.rememberNavController
 
 @Composable
