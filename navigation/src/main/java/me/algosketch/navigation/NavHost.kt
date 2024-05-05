@@ -1,5 +1,6 @@
 package me.algosketch.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,4 +33,8 @@ fun NavHost(
 
     val currentBackStack by navController.navigatorProvider[ComposeNavigator.NAME]!!.backStack.collectAsState()
     (currentBackStack.last().destination as ComposeNavigator.Destination).content()
+
+    BackHandler(currentBackStack.size > 1) {
+        navController.popBackStack()
+    }
 }

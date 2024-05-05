@@ -14,4 +14,10 @@ abstract class Navigator<D : NavDestination>(val name: String) {
             it + entry
         }
     }
+
+    fun popBackStack(popUpTo: NavBackStackEntry) {
+        _backStack.update {
+            it.takeWhile { backStack -> backStack != popUpTo }
+        }
+    }
 }
