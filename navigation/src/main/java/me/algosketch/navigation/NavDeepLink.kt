@@ -1,12 +1,17 @@
 package me.algosketch.navigation
 
+import android.net.Uri
+import android.os.Bundle
 import java.util.regex.Pattern
 
 class NavDeepLink(
-    private val uriPattern: String? = null,
+    val uriPattern: String? = null,
 ) {
     private val pathArgs = mutableListOf<String>()
     private var pathRegex: String? = null
+    private val pathPattern by lazy {
+        pathRegex?.let { Pattern.compile(it, Pattern.CASE_INSENSITIVE) }
+    }
 
     private companion object {
         private val FILL_IN_PATTERN = Pattern.compile("\\{(.+?)\\}")
@@ -38,6 +43,27 @@ class NavDeepLink(
         if (appendPos < uri.length) {
             uriRegex.append(Pattern.quote(uri.substring(appendPos)))
         }
+    }
+
+    fun getMatchingArguments(
+        deepLink: String,
+        arguments: Map<String, NamedNavArgument>
+    ): Bundle? {
+        val matcher = pathPattern?.matcher(deepLink) ?: return null
+
+        if (!matcher.matches()) return null
+
+        val bundle = Bundle()
+        pathArgs.forEachIndexed { index, argumentName ->
+            val value = Uri.decode(matcher.group(index + 1))
+            val argument = arguments[argumentName]
+            if (argument != null) {
+                val type = argument.type
+                type.parseAndPut(bundle, argumentName, value)
+            }
+        }
+
+        return bundle
     }
 
     init {
