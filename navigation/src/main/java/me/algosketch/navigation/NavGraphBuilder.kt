@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 fun NavGraphBuilder.composable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
-    content: @Composable () -> Unit,
+    content: @Composable (NavBackStackEntry) -> Unit,
 ) {
     addDestination(
         ComposeNavigator.Destination(content).apply {

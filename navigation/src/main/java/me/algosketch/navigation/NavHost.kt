@@ -32,7 +32,8 @@ fun NavHost(
     navController.graph = graph
 
     val currentBackStack by navController.navigatorProvider[ComposeNavigator.NAME]!!.backStack.collectAsState()
-    (currentBackStack.last().destination as ComposeNavigator.Destination).content()
+    val backStackEntry = currentBackStack.last()
+    (backStackEntry.destination as ComposeNavigator.Destination).content(backStackEntry)
 
     BackHandler(currentBackStack.size > 1) {
         navController.popBackStack()

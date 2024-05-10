@@ -23,19 +23,20 @@ fun MainNavHost() {
         composable("home") {
             Greeting(
                 modifier = Modifier.clickable {
-                    navController.navigate("detail")
+                    navController.navigate("detail/3")
                 },
                 name = "Android"
             )
         }
 
         composable(
-            route = "detail",
+            route = "detail/{id}",
             arguments = listOf(
                 navArgument("id") { type = NavType.IntType }
             )
-        ) {
-            Greeting(name = "Android Android")
+        ) { entry ->
+            val id = entry.arguments!!.getInt("id")
+            Greeting(name = "Android Android $id")
         }
     }
 }
