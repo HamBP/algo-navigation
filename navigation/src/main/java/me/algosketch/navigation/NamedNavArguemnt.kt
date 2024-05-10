@@ -32,4 +32,7 @@ class NamedNavArgument internal constructor(
             return NamedNavArgument(name, finalType, isNullable)
         }
     }
+
+    operator fun component1(): String = name
+    operator fun component2(): NamedNavArgument = this
 }

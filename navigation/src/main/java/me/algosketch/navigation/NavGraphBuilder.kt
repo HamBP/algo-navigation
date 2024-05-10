@@ -4,11 +4,15 @@ import androidx.compose.runtime.Composable
 
 fun NavGraphBuilder.composable(
     route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
     content: @Composable () -> Unit,
 ) {
     addDestination(
         ComposeNavigator.Destination(content).apply {
             this.route = route
+            arguments.forEach { (argumentName, argument) ->
+                addArgument(argumentName, argument)
+            }
         }
     )
 }

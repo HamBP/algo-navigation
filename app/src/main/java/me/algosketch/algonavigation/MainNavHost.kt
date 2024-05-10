@@ -29,7 +29,12 @@ fun MainNavHost() {
             )
         }
 
-        composable("detail") {
+        composable(
+            route = "detail",
+            arguments = listOf(
+                navArgument("id") { type = NavType.IntType }
+            )
+        ) {
             Greeting(name = "Android Android")
         }
     }
