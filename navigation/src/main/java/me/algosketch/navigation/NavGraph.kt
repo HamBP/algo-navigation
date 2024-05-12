@@ -4,10 +4,10 @@ class NavGraph : NavDestination("navigation") {
     val nodes = mutableListOf<NavDestination>()
     var startDestinationRoute: String? = null
 
-    override fun matchDeepLink(uri: String): DeepLinkMatch? {
-        val bestMatch = super.matchDeepLink(uri)
+    override fun matchDeepLink(navDeepLinkRequest: NavDeepLinkRequest): DeepLinkMatch? {
+        val bestMatch = super.matchDeepLink(navDeepLinkRequest)
         val bestChildMatch = nodes.mapNotNull { child ->
-            child.matchDeepLink(uri)
+            child.matchDeepLink(navDeepLinkRequest)
         }.maxOrNull()
 
         return listOfNotNull(bestMatch, bestChildMatch).maxOrNull()

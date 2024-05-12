@@ -66,6 +66,18 @@ class NavDeepLink(
         return bundle
     }
 
+    class Builder() {
+        var uriPattern: String? = null
+
+        fun build(): NavDeepLink {
+            checkNotNull(uriPattern) {
+                "DeepLink의 uriPattern이 null이 될 수 없습니다."
+            }
+
+            return NavDeepLink(uriPattern)
+        }
+    }
+
     init {
         parsePath()
     }

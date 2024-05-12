@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import me.algosketch.algonavigation.ui.theme.AlgoNavigationTheme
 import me.algosketch.navigation.NavHost
 import me.algosketch.navigation.NavType
 import me.algosketch.navigation.composable
 import me.algosketch.navigation.navArgument
+import me.algosketch.navigation.navDeepLink
 import me.algosketch.navigation.navigation
 import me.algosketch.navigation.rememberNavController
 
@@ -25,7 +27,7 @@ fun MainNavHost() {
         composable("home") {
             Greeting(
                 modifier = Modifier.clickable {
-                    navController.navigate("detail/3")
+                    navController.navigate("algosketch://detail/3".toUri())
                 },
                 name = "Android"
             )
@@ -35,6 +37,11 @@ fun MainNavHost() {
             route = "detail/{id}",
             arguments = listOf(
                 navArgument("id") { type = NavType.IntType }
+            ),
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "algosketch://detail/{id}"
+                }
             ),
             startDestination = "content"
         ) {

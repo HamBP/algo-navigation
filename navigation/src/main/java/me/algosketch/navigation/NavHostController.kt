@@ -1,9 +1,11 @@
 package me.algosketch.navigation
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.core.net.toUri
 import me.algosketch.navigation.NavDestination.Companion.createRoute
 
 @Composable
@@ -55,14 +57,22 @@ open class NavHostController {
     }
 
     fun navigate(route: String) {
-        val deepLinkMatch = graph.matchDeepLink(createRoute(route))
+        navigate(NavDeepLinkRequest(createRoute(route).toUri()))
+    }
+
+    fun navigate(deepLink: Uri) {
+        navigate(NavDeepLinkRequest(deepLink))
+    }
+
+    fun navigate(request: NavDeepLinkRequest) {
+        val deepLinkMatch = graph.matchDeepLink(request)
         if (deepLinkMatch != null) {
             val args = deepLinkMatch.matchingArgs ?: Bundle()
             val node = deepLinkMatch.destination
             navigate(node, args)
         } else {
             throw IllegalArgumentException(
-                "Navigation destination that matches request $route cannot be found in the " +
+                "Navigation destination that matches request $request cannot be found in the " +
                         "navigation graph $_graph"
             )
         }

@@ -27,15 +27,20 @@ open class NavDestination(
     }
 
     fun addDeepLink(uriPattern: String) {
-        deepLinks.add(NavDeepLink(uriPattern))
+        addDeepLink(NavDeepLink(uriPattern))
     }
 
-    open fun matchDeepLink(uri: String): DeepLinkMatch? {
+    fun addDeepLink(navDeepLink: NavDeepLink) {
+        deepLinks.add(navDeepLink)
+    }
+
+    open fun matchDeepLink(navDeepLinkRequest: NavDeepLinkRequest): DeepLinkMatch? {
         if (deepLinks.isEmpty()) {
             return null
         }
 
         for (deepLink in deepLinks) {
+            val uri = navDeepLinkRequest.uri.toString()
             val matchingArguments = deepLink.getMatchingArguments(uri, _arguments)
 
             if (matchingArguments != null || deepLink.uriPattern == uri) {

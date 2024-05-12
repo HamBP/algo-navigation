@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 fun NavGraphBuilder.composable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
     content: @Composable (NavBackStackEntry) -> Unit,
 ) {
     addDestination(
@@ -12,6 +13,9 @@ fun NavGraphBuilder.composable(
             this.route = route
             arguments.forEach { (argumentName, argument) ->
                 addArgument(argumentName, argument)
+            }
+            deepLinks.forEach { deepLink ->
+                addDeepLink(deepLink)
             }
         }
     )
@@ -21,6 +25,7 @@ fun NavGraphBuilder.navigation(
     route: String,
     startDestination: String,
     arguments: List<NamedNavArgument>,
+    deepLinks: List<NavDeepLink> = emptyList(),
     builder: NavGraphBuilder.() -> Unit
 ) {
     addDestination(
@@ -28,6 +33,9 @@ fun NavGraphBuilder.navigation(
             this.route = route
             arguments.forEach { (argumentName, argument) ->
                 addArgument(argumentName, argument)
+            }
+            deepLinks.forEach { deepLink ->
+                addDeepLink(deepLink)
             }
         }
     )
