@@ -1,11 +1,6 @@
 package me.algosketch.navigation
 
-import android.os.Bundle
 import androidx.annotation.CallSuper
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 abstract class Navigator<D : NavDestination>(val name: String) {
     private var _state: NavigatorState? = null
@@ -19,7 +14,6 @@ abstract class Navigator<D : NavDestination>(val name: String) {
 
     open fun navigate(
         entry: NavBackStackEntry,
-        args: Bundle?,
     ) {
         state.push(entry)
     }

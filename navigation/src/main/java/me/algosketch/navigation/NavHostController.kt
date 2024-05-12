@@ -23,6 +23,7 @@ open class NavHostController {
     private val backQueue: ArrayDeque<NavBackStackEntry> = ArrayDeque()
     private val navigatorState =
         mutableMapOf<Navigator<out NavDestination>, NavControllerNavigatorState>()
+    private var addToBackStackHandler: ((backStackEntry: NavBackStackEntry) -> Unit)? = null
 
     private var _graph: NavGraph? = null
     var graph: NavGraph
@@ -75,7 +76,18 @@ open class NavHostController {
         val navigator = navigatorProvider[node.navigatorName]!!
         addEntryToBackStack(backStackEntry)
 
-        navigator.navigate(backStackEntry, args)
+        navigator.navigateInternal(backStackEntry) {
+            addEntryToBackStack(it)
+        }
+    }
+
+    private fun Navigator<out NavDestination>.navigateInternal(
+        entry: NavBackStackEntry,
+        handler: (backStackEntry: NavBackStackEntry) -> Unit = {}
+    ) {
+        addToBackStackHandler = handler
+        navigate(entry)
+        addToBackStackHandler = null
     }
 
     fun addNavigator(navigator: Navigator<out NavDestination>) {
@@ -152,10 +164,11 @@ open class NavHostController {
         return backStack
     }
 
-    private class NavControllerNavigatorState(
+    private inner class NavControllerNavigatorState(
         val navigator: Navigator<out NavDestination>
     ) : NavigatorState() {
         override fun push(backStackEntry: NavBackStackEntry) {
+            addToBackStackHandler?.invoke(backStackEntry)
             super.push(backStackEntry)
         }
     }
