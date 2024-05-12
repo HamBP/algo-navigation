@@ -12,4 +12,11 @@ class NavGraph : NavDestination("navigation") {
 
         return listOfNotNull(bestMatch, bestChildMatch).maxOrNull()
     }
+
+    fun addDestinations(nodes: Collection<NavDestination>) {
+        for (node in nodes) {
+            node.parent = this
+            this.nodes.add(node)
+        }
+    }
 }

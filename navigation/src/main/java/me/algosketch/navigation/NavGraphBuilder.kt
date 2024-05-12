@@ -17,18 +17,34 @@ fun NavGraphBuilder.composable(
     )
 }
 
+fun NavGraphBuilder.navigation(
+    route: String,
+    startDestination: String,
+    arguments: List<NamedNavArgument>,
+    builder: NavGraphBuilder.() -> Unit
+) {
+    addDestination(
+        NavGraphBuilder(startDestination).apply(builder).build().apply {
+            this.route = route
+            arguments.forEach { (argumentName, argument) ->
+                addArgument(argumentName, argument)
+            }
+        }
+    )
+}
+
 open class NavGraphBuilder(
     private val startDestination: String,
 ) {
-    private val destinations = mutableListOf<ComposeNavigator.Destination>()
+    private val destinations = mutableListOf<NavDestination>()
 
-    fun addDestination(destination: ComposeNavigator.Destination) {
+    fun addDestination(destination: NavDestination) {
         destinations += destination
     }
 
     fun build(): NavGraph {
         return NavGraph().apply {
-            nodes += destinations.toList()
+            addDestinations(destinations)
             startDestinationRoute = startDestination
         }
     }

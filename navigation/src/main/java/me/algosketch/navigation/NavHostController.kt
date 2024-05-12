@@ -5,7 +5,6 @@ import androidx.annotation.MainThread
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import me.algosketch.navigation.NavDestination.Companion.createRoute
-import java.lang.IllegalStateException
 
 @Composable
 fun rememberNavController(): NavHostController {
@@ -64,7 +63,7 @@ open class NavHostController {
         val navigator = navigatorProvider[node.navigatorName]!!
         addEntryToBackStack(backStackEntry)
 
-        navigator.navigate(backStackEntry)
+        navigator.navigate(backStackEntry, args)
     }
 
     fun addNavigator(navigator: Navigator<out NavDestination>) {
@@ -79,7 +78,17 @@ open class NavHostController {
         }
     }
 
-    private fun popBackStack(route: String, inclusive: Boolean): Boolean {
+    fun popBackStack(route: String, inclusive: Boolean): Boolean {
+        val popped = popBackStackInternal(route, inclusive)
+
+        if (backQueue.isNotEmpty() && backQueue.last().destination is NavGraph) {
+            popEntryFromBackStack()
+        }
+
+        return popped
+    }
+
+    private fun popBackStackInternal(route: String, inclusive: Boolean): Boolean {
         val popOperations = mutableListOf<Navigator<*>>()
         val iterator = backQueue.reversed().iterator()
         while (iterator.hasNext()) {
@@ -108,9 +117,26 @@ open class NavHostController {
         return poped
     }
 
+    private fun popEntryFromBackStack() {
+        val entry = backQueue.last()
+        backQueue.removeLast()
+    }
+
     private fun addEntryToBackStack(
         backStackEntry: NavBackStackEntry,
     ) {
         backQueue.add(backStackEntry)
+    }
+
+    fun getBackStackEntry(route: String): NavBackStackEntry {
+        val backStack = backQueue.lastOrNull { entry ->
+            entry.destination.hasRoute(route)
+        }
+
+        requireNotNull(backStack) {
+            "현재 백스택에서 ${route}를 찾을 수 없어요."
+        }
+
+        return backStack
     }
 }

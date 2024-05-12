@@ -6,6 +6,7 @@ open class NavDestination(
     private val deepLinks = mutableListOf<NavDeepLink>()
     private var _arguments: MutableMap<String, NamedNavArgument> = mutableMapOf()
     val arguments = _arguments.toMap()
+    var parent: NavGraph? = null
 
     /**
      * NavGraph는 route를 갖지 않지만, startRoute로 startDestination을 찾으려면
@@ -45,6 +46,10 @@ open class NavDestination(
         }
 
         return null
+    }
+
+    fun hasRoute(route: String): Boolean {
+        return this.route == route
     }
 
     companion object {
