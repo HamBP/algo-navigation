@@ -21,6 +21,8 @@ private fun createNavController() = NavHostController().apply {
 open class NavHostController {
     val navigatorProvider = mutableMapOf<String, Navigator<out NavDestination>>()
     private val backQueue: ArrayDeque<NavBackStackEntry> = ArrayDeque()
+    private val navigatorState =
+        mutableMapOf<Navigator<out NavDestination>, NavControllerNavigatorState>()
 
     private var _graph: NavGraph? = null
     var graph: NavGraph
@@ -33,9 +35,19 @@ open class NavHostController {
         set(value) {
             if (value != _graph) {
                 _graph = value
+                onGraphCreated()
                 navigate(value, null)
             }
         }
+
+    private fun onGraphCreated() {
+        navigatorProvider.values.filterNot { it.isAttached }.forEach { navigator ->
+            val navigatorBackStack = navigatorState.getOrPut(navigator) {
+                NavControllerNavigatorState(navigator)
+            }
+            navigator.onAttach(navigatorBackStack)
+        }
+    }
 
     inline fun createGraph(builder: NavGraphBuilder): NavGraph {
         return builder.build()
@@ -138,5 +150,13 @@ open class NavHostController {
         }
 
         return backStack
+    }
+
+    private class NavControllerNavigatorState(
+        val navigator: Navigator<out NavDestination>
+    ) : NavigatorState() {
+        override fun push(backStackEntry: NavBackStackEntry) {
+            super.push(backStackEntry)
+        }
     }
 }

@@ -31,7 +31,8 @@ fun NavHost(
 ) {
     navController.graph = graph
 
-    val currentBackStack by navController.navigatorProvider[ComposeNavigator.NAME]!!.backStack.collectAsState()
+    val composeNavigator = navController.navigatorProvider[ComposeNavigator.NAME]!! as ComposeNavigator
+    val currentBackStack by composeNavigator.backStack.collectAsState()
     val backStackEntry = currentBackStack.last()
     (backStackEntry.destination as ComposeNavigator.Destination).content(backStackEntry)
 
