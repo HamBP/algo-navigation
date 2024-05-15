@@ -7,7 +7,6 @@ class ComposeNavGraphNavigator(
     override fun navigate(
         entry: NavBackStackEntry,
     ) {
-        super.navigate(entry)
         val args = entry.arguments
         val destination = entry.destination as NavGraph
         val startRoute = destination.startDestinationRoute!!

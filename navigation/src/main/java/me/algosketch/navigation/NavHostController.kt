@@ -84,10 +84,9 @@ open class NavHostController {
     ) {
         val backStackEntry = NavBackStackEntry(node, args)
         val navigator = navigatorProvider[node.navigatorName]!!
-        addEntryToBackStack(backStackEntry)
 
         navigator.navigateInternal(backStackEntry) {
-            addEntryToBackStack(it)
+            addEntryToBackStack(node, args, it)
         }
     }
 
@@ -157,8 +156,32 @@ open class NavHostController {
     }
 
     private fun addEntryToBackStack(
+        node: NavDestination,
+        finalArgs: Bundle?,
         backStackEntry: NavBackStackEntry,
     ) {
+        val hierarchy = ArrayDeque<NavBackStackEntry>()
+        var destination: NavDestination? = backStackEntry.destination
+        if (node is NavGraph) {
+            do {
+                val parent = destination!!.parent
+                if (parent != null) {
+                    val entry = NavBackStackEntry(parent, finalArgs)
+                    hierarchy.addFirst(entry)
+                }
+                destination = parent
+            } while (destination != null && destination != node)
+        }
+
+        hierarchy.forEach { entry ->
+            val navigator = navigatorProvider[entry.destination.navigatorName]!!
+            val navigatorBackStack = checkNotNull(navigatorState[navigator]) {
+                "NavigatorBackStack for ${node.navigatorName} should already be created"
+            }
+            navigatorBackStack.addInternal(entry)
+        }
+
+        backQueue.addAll(hierarchy)
         backQueue.add(backStackEntry)
     }
 
@@ -179,6 +202,10 @@ open class NavHostController {
     ) : NavigatorState() {
         override fun push(backStackEntry: NavBackStackEntry) {
             addToBackStackHandler?.invoke(backStackEntry)
+            addInternal(backStackEntry)
+        }
+
+        fun addInternal(backStackEntry: NavBackStackEntry) {
             super.push(backStackEntry)
         }
     }
